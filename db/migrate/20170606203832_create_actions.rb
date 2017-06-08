@@ -1,7 +1,6 @@
 class CreateActions < ActiveRecord::Migration[5.0]
   def change
     create_table :actions do |t|
-      t.string :title
       t.text :description
       t.boolean :complete, :default => false
       t.datetime :completed_at

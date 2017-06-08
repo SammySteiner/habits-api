@@ -16,7 +16,6 @@ ActiveRecord::Schema.define(version: 20170606203832) do
   enable_extension "plpgsql"
 
   create_table "actions", force: :cascade do |t|
-    t.string   "title"
     t.text     "description"
     t.boolean  "complete",     default: false
     t.datetime "completed_at"
@@ -37,11 +36,9 @@ ActiveRecord::Schema.define(version: 20170606203832) do
   end
 
   create_table "goals", force: :cascade do |t|
-    t.string   "title"
-    t.text     "description"
     t.boolean  "complete",     default: false
     t.datetime "completed_at"
-    t.datetime "expiration"
+    t.date     "expiration"
     t.integer  "plan_id"
     t.datetime "created_at",                   null: false
     t.datetime "updated_at",                   null: false
@@ -49,7 +46,7 @@ ActiveRecord::Schema.define(version: 20170606203832) do
   end
 
   create_table "plans", force: :cascade do |t|
-    t.string   "name"
+    t.string   "title"
     t.text     "description"
     t.boolean  "repeat"
     t.boolean  "complete",     default: false
