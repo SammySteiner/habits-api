@@ -8,7 +8,11 @@ class Api::V1::UsersController < ApplicationController
 
   def create
     user = User.create(user_params)
-    render json: user
+    token = JWT.encode({user_id: user.id}, ENV['JWT_SECRET'], ENV['JWT_ALGORITHM'])
+    render json: {
+      user: user,
+      token: token
+    }
   end
 
   def show
