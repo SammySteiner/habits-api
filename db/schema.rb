@@ -36,8 +36,10 @@ ActiveRecord::Schema.define(version: 20170606203832) do
   end
 
   create_table "goals", force: :cascade do |t|
+    t.date     "start_date"
     t.boolean  "complete",     default: false
     t.datetime "completed_at"
+    t.integer  "interval"
     t.date     "expiration"
     t.integer  "plan_id"
     t.datetime "created_at",                   null: false

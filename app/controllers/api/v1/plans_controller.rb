@@ -3,13 +3,18 @@ class Api::V1::PlansController < ApplicationController
 
   def create
     user = current_user
-    plan = Plan.create(title: plan_params[:title], description: plan_params[:description], repeat: plan_params[:repeat], user_id: user.id)
+    today = Date.today
+    date = Date.today
+    plan = Plan.create(title: plan_params[:title].titleize, description: plan_params[:description], repeat: plan_params[:repeat], user_id: user.id)
     plan_params[:goals].each do |goal|
+      date = date + goal[:interval].to_i
       binding.pry
-      new_goal = Goal.create( expiration: Date.today + goal[:expiration].to_i, plan_id: plan.id)
+      # set a start date with current date plus interval
+      # save the interval, save the start date as today
+
+      new_goal = Goal.create( expiration: date, plan_id: plan.id, interval: goal[:interval].to_i, start_date: today)
       goal[:actions].each do |action|
-        binding.pry
-        Action.create(description: action, goal_id: new_goal.id)
+        Action.create(description: action[:description], goal_id: new_goal.id)
       end
     end
     render json: plan
@@ -18,7 +23,7 @@ class Api::V1::PlansController < ApplicationController
   private
 
   def plan_params
-    params.require(:plan).permit(:title, :description, :repeat, goals: [:expiration, actions: []])
+    params.require(:plan).permit(:title, :description, :repeat, goals: [:interval, actions: [:description]])
   end
 
 
