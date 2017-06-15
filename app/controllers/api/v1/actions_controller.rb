@@ -9,30 +9,11 @@ class Api::V1::ActionsController < ApplicationController
     goal = action.goal
     plan = goal.plan
     conditions = action.goal.actions.count
-    completed = 0
-    goal.actions.each do |action|
-      if action.complete
-        completed += 1
-      end
-    end
-    if conditions === completed
+    if conditions === goal.completed_actions
       goal.update(complete: true, completed_at: date)
-      completed_goals = 0
-      plan.goals.each do |plan_goal|
-        if plan_goal.complete
-          completed_goals += 1
-        end
-      end
-      if plan.goals.count === completed_goals
+      if plan.goals.count === plan.completed_goals
         if plan.repeat
-          plan.goals.each_with_index do |repeat_goal, index|
-          new_start_date = index === 0 ? goal.expiration : plan.goals[-1].expiration
-          new_expiration = new_start_date + repeat_goal.interval
-          new_goal = Goal.create(interval: repeat_goal.interval, expiration: new_expiration, start_date: new_start_date, plan_id: plan.id)
-            repeat_goal.actions.each do |repeat_action|
-              Action.create(description: repeat_action.description, goal_id: repeat_goal.id)
-            end
-          end
+          plan.repeat_plan(goal)
         else
           goal.plan.update(complete: true, completed_at: Date.today())
         end

@@ -17,7 +17,7 @@ hike = Plan.create(title: 'Get outside!'.titleize, description: 'spend an hour w
 hike_goal = Goal.create(expiration: Date.tomorrow(), plan_id: 2, interval: 1, start_date: Date.today())
 hike_action_1 = Action.create(description: 'go for a 30 min walk', goal_id: hike_goal.id)
 
-marathon = Plan.create(title: 'get ready for, and run, a half marathon'.titleize, description: 'run more and more each week', repeat: true, user_id: 1)
+marathon = Plan.create(title: 'get ready for, and run, a half marathon'.titleize, description: 'run more and more each week', repeat: false, user_id: 1)
 marathon_goal_1 = Goal.create(expiration: Date.tomorrow(), plan_id: 3, interval: 1, start_date: Date.today())
 marathon_goal_2 = Goal.create(expiration: marathon_goal_1.expiration.tomorrow(), plan_id: 3, interval: 1, start_date: Date.today())
 marathon_goal_3 = Goal.create(expiration: marathon_goal_2.expiration.tomorrow(), plan_id: 3, interval: 1, start_date: Date.today())
