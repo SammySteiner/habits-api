@@ -8,7 +8,10 @@ Rails.application.routes.draw do
 
       post 'users/newplan', to: 'plans#create'
       patch 'users/complete-action/:id', to: 'actions#complete'
+      delete 'users/actions/:id', to: 'actions#delete'
       delete 'users/goals/:id', to: 'goals#delete'
+      delete 'users/plans/:id', to: 'plans#delete'
+      patch 'plan/:id/edit', to: 'plans#update'
     end
   end
 end

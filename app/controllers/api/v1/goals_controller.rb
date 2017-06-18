@@ -4,7 +4,7 @@ class Api::V1::GoalsController < ApplicationController
   def delete
     goal = Goal.find(params[:id])
     goal.destroy
-    render json: current_user
+    render json: self.plan
   end
 
 end
