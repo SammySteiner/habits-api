@@ -10,7 +10,9 @@ class Api::V1::PlansController < ApplicationController
   def update
     plan = Plan.find(params[:id])
     plan.update(title: params[:plan][:title], description: params[:plan][:description], repeat: params[:plan][:repeat])
+    updated_goals = []
     plan_params[:goals_attributes].each do |g|
+      updated_goals << g[:id]
       if Goal.exists?(g[:id])
         goal = Goal.find(g[:id])
         goal.update(interval: g[:interval], complete: g[:complete], completed_at: g[:completed_at])
@@ -24,9 +26,12 @@ class Api::V1::PlansController < ApplicationController
         end
       else
         goal = Goal.create(g.merge(plan_id: plan[:id]))
-        g[:actions_attributes].each do |a|
-          Action.create(a.merge(goal_id: g[:id]))
-        end
+        updated_goals << goal[:id]
+      end
+    end
+    plan.goals.each do |g|
+      if !updated_goals.include?(g[:id])
+        g.destroy
       end
     end
     render json: current_user
