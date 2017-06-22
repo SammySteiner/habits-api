@@ -1,8 +1,10 @@
 class Api::V1::UsersController < ApplicationController
-  before_action :authorize_account, only: [:index, :show, :update, :destroy]
+  before_action :authorize_account, only: [:show, :update, :destroy]
 
   def index
-    users = User.all
+    users = User.all.map do |user|
+      user.username
+    end
     render json: users
   end
 

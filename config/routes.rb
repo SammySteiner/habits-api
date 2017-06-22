@@ -3,9 +3,10 @@ Rails.application.routes.draw do
 
   namespace :api do
     namespace :v1 do
-      resources :users, only: [:index, :create, :show, :update, :destroy]
+      resources :users, only: [:create, :show, :update, :destroy]
       resources :auth, only: [:create]
 
+      get 'usernames', to: 'users#index'
       post 'users/newplan', to: 'plans#create'
       patch 'users/complete-action/:id', to: 'actions#complete'
       delete 'users/actions/:id', to: 'actions#delete'
